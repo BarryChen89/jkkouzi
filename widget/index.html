@@ -135,10 +135,12 @@
             userName : 'chenwenqi',
             userId : 'admin123456'
         }, function(ret, err) {
+                alert('ok1:'+JSON.stringify(ret));
                 if(!err){
                     push.joinGroup({
                         groupName : 'All'
                     }, function(ret, err) {
+                        alert('ok2:'+JSON.stringify(ret));
                         if(!err){
                             push.setListener(function( ret, err ){
                                 if( ret ){
