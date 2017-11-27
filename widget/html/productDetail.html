@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云API</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/mui.min.css"/>
+    <style>
+        .empty{ text-align: center; padding: 120px 0; }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header id="header" class="mui-bar mui-bar-nav">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" onclick="api.closeWin()"></a>
+        <h1 class="mui-title">产品详情</h1>
+    </header>
+    <!-- 详情表单 -->
+    <div class="mui-content">
+            <div class="title">
+                右侧无导航箭头
+            </div>
+            <ul class="mui-table-view">
+                 <li class="mui-table-view-cell">Item 1</li>
+                 <li class="mui-table-view-cell">Item 2</li>
+                 <li class="mui-table-view-cell">Item 3</li>
+            </ul>
+            <div class="title">
+                右侧有导航箭头
+            </div>
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right">
+                        Item 1
+                    </a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right">
+                        Item 2
+                    </a>
+                </li>
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right">
+                        Item 3
+                    </a>
+                </li>
+            </ul>
+            <div class="title">
+                card（圆角列表）
+            </div>
+            <div class="mui-card" style="margin-bottom: 35px;">
+                <ul class="mui-table-view">
+                    <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right">
+                            Item 1
+                        </a>
+                    </li>
+                    <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right">
+                            Item 2
+                        </a>
+                    </li>
+                    <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right">
+                            Item 3
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="title">
+                <button type="button" class="mui-btn mui-btn-warning mui-btn-block" onclick="apply()">立即申请</button>
+            </div>
+        </div>
+    <script src="../script/mui.min.js"></script>  
+    <script src="../script/api.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        function apply(){
+            api.openWin({
+                name:'applyFrame',
+                url:'productApply.html'
+            })
+        }
+    </script>
+
+</body>
+</html>

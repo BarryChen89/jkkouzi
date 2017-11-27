@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <style>
+    #footer{ background-color: #f2f2f2; }
+    #footer ul li{ padding-top: 36px; padding-bottom: 4px; background: url() no-repeat center 2px; background-size: auto 30px; text-align: center; }
+    #footer ul li.active{ color: #6ab494; }
+    #footer ul li:nth-child(1){ background-image: url(./image/bottombtn0101.png); }
+    #footer ul li:nth-child(2){ background-image: url(./image/bottombtn0201.png); }
+    #footer ul li:nth-child(3){ background-image: url(./image/bottombtn0301.png); }
+    #footer ul li:nth-child(4){ background-image: url(./image/bottombtn0401.png); }
+    #footer ul li:nth-child(1).active{ background-image: url(./image/bottombtn0102.png); }
+    #footer ul li:nth-child(2).active{ background-image: url(./image/bottombtn0202.png); }
+    #footer ul li:nth-child(3).active{ background-image: url(./image/bottombtn0302.png); }
+    #footer ul li:nth-child(4).active{ background-image: url(./image/bottombtn0402.png); }
+    </style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+    <!-- 主画面 -->
+    <div id="main" class="flex-con"></div>
+    <!-- 底部导航 -->
+    <div id="footer" class="border-t"></div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+
+<script type="text/javascript">
+    var rootFrames = [
+        {'name':'首页','frameName':'mainFrame1','page':'./html/mainFrame/frame1.html','bgColor':'#fff'},
+        {'name':'列表','frameName':'mainFrame2','page':'./html/mainFrame/frame2.html','bgColor':'#fff'},
+        {'name':'活动','frameName':'mainFrame3','page':'./html/mainFrame/frame3.html','bgColor':'#fff'},
+        {'name':'我的','frameName':'mainFrame4','page':'./html/mainFrame/frame4.html','bgColor':'#fff'}
+    ];
+
+    /*
+     * rootFrame(底部导航组件)
+     * UPDATE:17/11/8
+     * AUTHOR:陈文琦
+     */
+    (function(){
+        var rootFrame = function(apiName){
+            this.main = $api.dom('#main');
+            this.footer = $api.dom('#footer');
+            this.apiName = apiName;
+        }
+
+        rootFrame.prototype = {
+            init: function(){
+                this.initRooter();
+                this.initMainFrame();
+            },
+            /*
+             * 创建底部导航结构
+             */
+            initRooter: function(){
+                if( rootFrames.length == 0 ) return;
+                var _ul = '<ul class="flex-wrap">';
+                for(var i = 0,len = rootFrames.length; i < len; i++){
+                    _ul += '<li tapmode="" '
+                            +' class="flex-con ' + ((i==0)?'active':'') + '" '
+                            + 'onclick="changeNav('+i+')"'
+                            + '" >'+rootFrames[i].name+'</li>';
+                }
+                _ul += '</ul>';
+                $api.html(this.footer,_ul);
+            },
+            /*
+             * 主画面显示mainFrameGroup
+             */
+            initMainFrame : function(){
+                var frames = [],
+                    i = 0,
+                    len = rootFrames.length;
+                for(; i < len; i++){
+                    frames.push({
+                        name: rootFrames[i].frameName,
+                        url: rootFrames[i].page,
+                        bgColor: rootFrames[i].bgColor,
+                        bounces: true
+                    });
+                }
+
+                api.openFrameGroup({
+                    name: 'mainFrameGroup',
+                    scrollEnabled: true,
+                    rect: {
+                        x: 0,
+                        y: 0,
+                        w: api.winWidth,
+                        h: $api.dom('#main').offsetHeight
+                    },
+                    index: 0,
+                    frames: frames,
+                },function(ret,err){
+                    if(err) $api.html($api.dom('#main'),err);
+                });
+            },
+            changeNav: function(i){
+                api.setFrameGroupIndex({
+                    name: 'mainFrameGroup',
+                    index: i
+                });
+                
+                if($api.domAll('#footer li')[i] == $api.dom('#footer li.active') ) {
+                    return;
+                }
+                var footList = $api.domAll('#footer li'),
+                    frames = [],
+                    j = 0,
+                    len = footList.length;
+                for (; j < len; j++){
+                    $api.removeCls(footList[j], 'active');
+                }
+                $api.addCls(footList[i], 'active');
+            }
+        }
+        window.rootFrame = rootFrame;
+    })(window);
+
+    var appRootFrame = '';
+    apiready = function(){        
+        appRootFrame = new rootFrame('appRootFrame');
+        appRootFrame.init();
+
+        var push = api.require('push');
+        push.bind({
+            userName : 'chenwenqi',
+            userId : 'admin123456'
+        }, function(ret, err) {
+                if(!err){
+                    push.joinGroup({
+                        groupName : 'All'
+                    }, function(ret, err) {
+                        if(!err){
+                            push.setListener(function( ret, err ){
+                                if( ret ){
+                                    alert( '获取消息：'+JSON.stringify( ret) );
+                                }else{
+                                    alert( 'error3:'+JSON.stringify( err) );
+                                }
+                            });
+                            push.setPreference({
+                                notify: true,
+                                updateCurrent: false,
+                                silenceTime: {//晚上10点30到第二天上午9点之间静默
+                                    startHour: 22,
+                                    endHour: 9,
+                                    startMinute: 30,
+                                    endMinute: 0
+                                },
+                                defaults: 'all'
+                            });
+                        }else{
+                            alert('error2:'+JSON.stringify(err));
+                        }
+                    });
+                }else{
+                    alert('error1:'+JSON.stringify(err));
+                }
+        });
+    }
+    /*
+     * 导航切换接口函数
+     */
+    function changeNav(i){
+        appRootFrame.changeNav(i);
+    }
+
+    // 加载欢迎页
+    // function fnOpenWelcome() {
+    //     var frames = [];
+    //     for (var i = 1; i <= 4; i++) {
+    //         frames.push({
+    //             name: 'welcome_frame_' + i,
+    //             url: './html/welcome_frame_' + i + '.html',
+    //             bounces: false,
+    //             bgColor: './image/welcome/' + i + '.png'
+    //         });
+    //     }
+    //     api.openFrameGroup({
+    //         name: 'welcome_group',
+    //         scrollEnabled: true,
+    //         rect: {
+    //             x: 0,
+    //             y: 0,
+    //             w: 'auto',
+    //             h: 'auto'
+    //         },
+    //         index: 0,
+    //         frames: frames
+    //     });
+    // };
+
+    
+</script>

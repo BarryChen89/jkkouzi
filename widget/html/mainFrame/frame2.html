@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>产品列表</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+    <style>
+        .empty{ text-align: center; padding: 120px 0; }
+    </style>
+</head>
+<body>
+    <p class="report"></p>
+    <ul class="mui-table-view">
+        <li tapmode="" class="mui-table-view-cell mui-media" onclick="detail()">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left" src="../../image/shuijiao.jpg">
+                <div class="mui-media-body">
+                    幸福
+                    <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+                </div>
+            </a>
+        </li>
+        <li tapmode="" class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left" src="../../image/muwu.jpg">
+                <div class="mui-media-body">
+                    木屋
+                    <p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+                </div>
+            </a>
+        </li>
+        <li tapmode="" class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left" src="../../image/cbd.jpg">
+                <div class="mui-media-body">
+                    CBD
+                    <p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+                </div>
+            </a>
+        </li>
+
+    </ul>
+    
+    <script src="../../script/mui.min.js"></script>  
+    <script src="../../script/api.js"></script>
+    <script type="text/javascript">
+        apiready = function () {
+        };
+
+        function pickFile(params){
+            $api.html($api.dom('.report'),'传参：'+JSON.stringify(params));
+        }
+
+        function detail(){
+            api.openWin({
+                name:'detailFrame',
+                url:'../productDetail.html'
+            })
+        }
+    </script>
+</body>
+</html>
