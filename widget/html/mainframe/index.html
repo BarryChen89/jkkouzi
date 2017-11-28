@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+    <style>
+        .empty{ text-align: center; padding: 120px 0; }
+    </style>
+</head>
+<body>
+    <!-- <div class="empty">云API222</div> -->
+    <div id="slider" class="mui-slider" >  
+        <div class="mui-slider-group mui-slider-loop">  
+            <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->  
+            <div class="mui-slider-item mui-slider-item-duplicate">  
+                <a href="#">  
+                    <img src="../../image/banner/3.jpg">  
+                </a>  
+            </div>  
+            <!-- 第一张 -->  
+            <div class="mui-slider-item">  
+                <a href="#">  
+                    <img src="../../image/banner/1.jpg">  
+                </a>  
+            </div>  
+            <!-- 第二张 -->  
+            <div class="mui-slider-item">  
+                <a href="#">  
+                    <img src="../../image/banner/2.jpg">  
+                </a>  
+            </div>  
+            <!-- 第三张 -->  
+            <div class="mui-slider-item">  
+                <a href="#">  
+                    <img src="../../image/banner/3.jpg">  
+                </a>  
+            </div>
+            <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->  
+            <div class="mui-slider-item mui-slider-item-duplicate">  
+                <a href="#">  
+                    <img src="../../image/banner/1.jpg">  
+                </a>  
+            </div>  
+        </div>  
+        <div class="mui-slider-indicator">  
+            <div class="mui-indicator mui-active"></div>  
+            <div class="mui-indicator"></div>  
+            <div class="mui-indicator"></div>
+        </div>  
+    </div>
+
+    <ul class="mui-table-view mui-grid-view">
+        <li class="mui-table-view-cell mui-media mui-col-xs-3" tapmode="" onclick="openListFrame(0)">
+            <a href="javascript:">
+                <img class="mui-media-object" src="../../image/shuijiao.jpg">
+                <div class="mui-media-body">按钮1</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-3" tapmode="" onclick="openListFrame(1)">
+            <a href="javascript:">
+                <img class="mui-media-object" src="../../image/muwu.jpg">
+                <div class="mui-media-body">按钮2</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-3" tapmode="" onclick="openListFrame(2)">
+            <a href="javascript:">
+                <img class="mui-media-object" src="../../image/cbd.jpg">
+                <div class="mui-media-body">按钮3</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-3" tapmode="" onclick="openListFrame(3)">
+            <a href="javascript:">
+                <img class="mui-media-object" src="../../image/yuantiao.jpg">
+                <div class="mui-media-body">按钮4</div>
+            </a>
+        </li>
+    </ul>
+
+    <div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-primary">
+        <a class="mui-control-item mui-active" href="#item1">热门产品</a>
+        <a class="mui-control-item" href="#item2">其他产品</a>
+    </div>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left" src="../../image/shuijiao.jpg">
+                <div class="mui-media-body">
+                    幸福
+                    <p class="mui-ellipsis">能和心爱的人一起睡觉，是件幸福的事情；可是，打呼噜怎么办？</p>
+                </div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left" src="../../image/muwu.jpg">
+                <div class="mui-media-body">
+                    木屋
+                    <p class="mui-ellipsis">想要这样一间小木屋，夏天挫冰吃瓜，冬天围炉取暖.</p>
+                </div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left" src="../../image/cbd.jpg">
+                <div class="mui-media-body">
+                    CBD
+                    <p class="mui-ellipsis">烤炉模式的城，到黄昏，如同打翻的调色盘一般.</p>
+                </div>
+            </a>
+        </li>
+
+    </ul>
+    <script src="../../script/mui.min.js"></script>  
+    <script src="../../script/api.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        // 假数据
+        
+        apiready = function () {
+            mui.init({  
+                swipeBack:false //启用右滑关闭功能  
+            });  
+            var slider = mui("#slider");  
+            slider.slider({  
+                interval: 5000  
+            });
+        };
+        
+        function openListFrame(i){
+            // 切换底部导航
+            api.execScript({
+                name: 'root',
+                script: 'changeNav('+i+')'
+            });
+
+            if(i==1){
+                // 传参
+                var data = {
+                    'type':'1',
+                    'text':'abc'
+                }
+                api.execScript({
+                    frameName: 'mainFrame2',
+                    script: 'pickFile('+JSON.stringify(data)+')'
+                });
+            }
+        }
+    </script> 
+
+</body>
+</html>

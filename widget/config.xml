@@ -36,26 +36,8 @@
 	<permission name="hardware" />
 	<permission name="contact" />
 
-	<!-- <feature name="weiXin">
-        <param name="urlScheme" value="wx7779c7c063a9d4d9" />
-        <param name="apiKey" value="wx7779c7c063a9d4d9" />
+    <feature name="ajpush">
+        <param name="app_key" value="96655c0f385ca0ccf5543045" />
+        <param name="channel" value="developer-default" />
     </feature>
-    <feature name="sinaWeiBo">
-        <param name="urlScheme" value="wb1062272715" />
-        <param name="apiKey" value="1062272715" />
-    </feature>
-    <feature name="aliPay">
-         <param name="urlScheme" value="AliPayA00000000001" />
-    </feature>
-    <feature name="baiduLocation">
-        <param name="apiKey" value="fef72715gshjelke" />
-    </feature>
-    <feature name="baiduMap">
-        <param name="android_api_key" value="fef72715gshjelke" />
-        <param name="ios_api_key" value="fef72715gshjelke" />
-    </feature>
-    <feature name="qq">
-        <param name="urlScheme" value="tencent9c7c063a9d4d9" />
-        <param name="apiKey" value="9c7c063a9d4d9" />
-    </feature> -->
 </widget>

@@ -33,19 +33,18 @@
 <script type="text/javascript" src="script/api.js"></script>
 
 <script type="text/javascript">
-    var rootFrames = [
-        {'name':'首页','frameName':'mainFrame1','page':'./html/mainFrame/frame1.html','bgColor':'#fff'},
-        {'name':'列表','frameName':'mainFrame2','page':'./html/mainFrame/frame2.html','bgColor':'#fff'},
-        {'name':'活动','frameName':'mainFrame3','page':'./html/mainFrame/frame3.html','bgColor':'#fff'},
-        {'name':'我的','frameName':'mainFrame4','page':'./html/mainFrame/frame4.html','bgColor':'#fff'}
-    ];
-
     /*
      * rootFrame(底部导航组件)
      * UPDATE:17/11/8
      * AUTHOR:陈文琦
      */
     (function(){
+        var rootFrames = [
+            {'name':'首页','frameName':'mainFrame1','page':'./html/mainframe/home.html','bgColor':'#fff'},
+            {'name':'列表','frameName':'mainFrame2','page':'./html/mainframe/list.html','bgColor':'#fff'},
+            {'name':'活动','frameName':'mainFrame3','page':'./html/mainframe/ad.html','bgColor':'#fff'},
+            {'name':'我的','frameName':'mainFrame4','page':'./html/mainframe/me.html','bgColor':'#fff'}
+        ];
         var rootFrame = function(apiName){
             this.main = $api.dom('#main');
             this.footer = $api.dom('#footer');
@@ -126,47 +125,61 @@
     })(window);
 
     var appRootFrame = '';
-    apiready = function(){        
+    apiready = function(){     
         appRootFrame = new rootFrame('appRootFrame');
         appRootFrame.init();
 
-        var push = api.require('push');
-        push.bind({
-            userName : 'chenwenqi',
-            userId : 'admin123456'
+        fnOpenWelcome();  
+
+
+        var ajpush = api.require('ajpush');
+        ajpush.init(function(ret) {
+            if (ret && ret.status){
+                ajpush.setListener(function(ret) {
+                         var id = ret.id;
+                         var title = ret.title;
+                         var content = ret.content;
+                         var extra = ret.extra;
+                         alert(JSON.stringify(ret));
+                         alert(title+' | '+content);
+                    }
+                );
+            }
+        });
+
+        api.addEventListener({name:'resume'}, function(ret,err) {
+            var ajpush = api.require('ajpush');
+            ajpush.onResume();
+        });
+        api.addEventListener({name:'pause'}, function(ret,err) {
+            var ajpush = api.require('ajpush');
+            ajpush.onPause();
+        });
+
+        // 点击通知栏进入app-Android
+        api.addEventListener({
+            name: 'appintent'
         }, function(ret, err) {
-                alert('ok1:'+JSON.stringify(ret));
-                if(!err){
-                    push.joinGroup({
-                        groupName : 'All'
-                    }, function(ret, err) {
-                        alert('ok2:'+JSON.stringify(ret));
-                        if(!err){
-                            push.setListener(function( ret, err ){
-                                if( ret ){
-                                    alert( '获取消息：'+JSON.stringify( ret) );
-                                }else{
-                                    alert( 'error3:'+JSON.stringify( err) );
-                                }
-                            });
-                            push.setPreference({
-                                notify: true,
-                                updateCurrent: false,
-                                silenceTime: {//晚上10点30到第二天上午9点之间静默
-                                    startHour: 22,
-                                    endHour: 9,
-                                    startMinute: 30,
-                                    endMinute: 0
-                                },
-                                defaults: 'all'
-                            });
-                        }else{
-                            alert('error2:'+JSON.stringify(err));
-                        }
-                    });
-                }else{
-                    alert('error1:'+JSON.stringify(err));
-                }
+            if (ret && ret.appParam.ajpush) {
+                var ajpush = ret.appParam.ajpush;
+                var id = ajpush.id;
+                var title = ajpush.title;
+                var content = ajpush.content;
+                var extra = ajpush.extra;
+                 alert(JSON.stringify(ret));
+                 alert('唤醒：'+title+' | '+content);
+            }
+        });
+
+        // 点击通知栏进入app-iOS
+        api.addEventListener({
+            name: 'noticeclicked'
+        }, function(ret, err) {
+            if (ret && ret.value) {
+                var ajpush = ret.value;
+                var content = ajpush.content;
+                var extra = ajpush.extra;
+            }
         });
     }
     /*
@@ -177,29 +190,16 @@
     }
 
     // 加载欢迎页
-    // function fnOpenWelcome() {
-    //     var frames = [];
-    //     for (var i = 1; i <= 4; i++) {
-    //         frames.push({
-    //             name: 'welcome_frame_' + i,
-    //             url: './html/welcome_frame_' + i + '.html',
-    //             bounces: false,
-    //             bgColor: './image/welcome/' + i + '.png'
-    //         });
-    //     }
-    //     api.openFrameGroup({
-    //         name: 'welcome_group',
-    //         scrollEnabled: true,
-    //         rect: {
-    //             x: 0,
-    //             y: 0,
-    //             w: 'auto',
-    //             h: 'auto'
-    //         },
-    //         index: 0,
-    //         frames: frames
-    //     });
-    // };
+    function fnOpenWelcome() {
+        // 仅第一次运行app时出现
+        if($api.getStorage('firstStart')!='1'){
+            api.openWin({
+                name:'welcomeWin',
+                url:'./html/welcome/index.html'
+            });
+            $api.setStorage('firstStart','1');
+        }        
+    };
 
-    
+
 </script>
